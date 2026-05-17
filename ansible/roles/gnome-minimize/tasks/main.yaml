@@ -63,6 +63,18 @@
     name: "{{ gnome_remove.flatpak }}"
     state: absent
 
+- name: Remove Audio Production apps (ardour/audacity/musescore/etc.)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.audio_prod }}"
+    state: absent
+
+- name: Remove unused GNOME apps (Boxes/Evolution/Text Editor/Calculator/etc.)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.gnome_apps }}"
+    state: absent
+
 - name: Clean orphan dependencies
   become: true
   ansible.builtin.dnf:

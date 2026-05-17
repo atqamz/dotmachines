@@ -52,6 +52,47 @@ gnome_remove:
     - flatpak
     - fedora-flathub-remote
     - flatpak-selinux
+  # Audio Production cruft. Previously pulled in by @audio group on Fedora;
+  # group is now dropped from base-packages, this purges any existing installs.
+  audio_prod:
+    - ardour9
+    - audacity
+    - Carla
+    - lv2-carla
+    - musescore
+    - musescore-data
+    - musescore-soundfont
+    - musescoreicon-fonts
+    - guitarix
+    - hydrogen
+    - rosegarden4
+    - qjackctl
+    - lsp-plugins-jack
+    - jack-mixer
+    - a2jmidid
+    - alsamixergui
+    - ams
+    - Add64
+    - drumkv1
+    - dssi
+    - ffado
+    - fluid-soundfont-gm
+    - fluidsynth
+    - frescobaldi
+    - calf
+    - arpage
+  # GNOME apps unused on a Hyprland-first workstation.
+  # Conservative cut: keeps gnome-shell + gnome-control-center for fallback session.
+  gnome_apps:
+    - gnome-boxes
+    - gnome-connections
+    - gnome-remote-desktop
+    - gnome-text-editor
+    - gnome-calculator
+    - gnome-classic-session
+    - "gnome-shell-extension-*"
+    - evolution
+    - "evolution-*"
 
 # Lean replacements installed after removal pass
 gnome_install:
