@@ -68,6 +68,8 @@
   ansible.builtin.dnf:
     name: "{{ gnome_remove.audio_prod }}"
     state: absent
+    allowerasing: true     # cascade-erase requirers (liblrdf, etc.)
+    autoremove: true       # sweep orphan deps
 
 - name: Remove unused GNOME apps (Boxes/Evolution/Text Editor/Calculator/etc.)
   become: true

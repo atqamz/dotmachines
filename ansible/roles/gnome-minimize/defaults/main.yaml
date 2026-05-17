@@ -112,8 +112,10 @@ gnome_remove:
     - ffado
     - dssi
     - arpage
-    # LADSPA plugin sets
+    # LADSPA plugin sets + RDF helper
     - ladspa
+    - liblrdf
+    - ladspa-swh-plugins
     - ladspa-amb-plugins
     - ladspa-autotalent-plugins
     - ladspa-blop-plugins
