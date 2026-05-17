@@ -22,10 +22,18 @@
       tags: [packages, base]
     - role: nvidia
       tags: [packages, nvidia]
-    - role: video-accel
-      tags: [packages, video-accel]
+    - role: multimedia
+      tags: [packages, multimedia]
     - role: hyprland
       tags: [packages, hyprland, desktop]
+    - role: firmware
+      tags: [firmware]
+    - role: tailscale
+      tags: [tailscale, network]
+    - role: warp
+      tags: [warp, network]
+    - role: system-tweaks
+      tags: [tweaks]
     - role: dotfiles
       tags: [dotfiles]
     - role: secrets-bootstrap

@@ -18,13 +18,6 @@
           - xorg-x11-drv-nvidia-cuda
         state: present
 
-    - name: Replace ffmpeg-free with full ffmpeg (RPM Fusion)
-      become: true
-      ansible.builtin.dnf:
-        name: ffmpeg
-        state: present
-        allowerasing: true
-
     - name: Show reboot reminder
       ansible.builtin.debug:
         msg: >-

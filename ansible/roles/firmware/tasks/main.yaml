@@ -1,0 +1,28 @@
+---
+- name: Install fwupd
+  become: true
+  ansible.builtin.dnf:
+    name: fwupd
+    state: present
+
+- name: Refresh LVFS metadata (force)
+  become: true
+  ansible.builtin.command: fwupdmgr refresh --force
+  register: firmware_refresh
+  changed_when: false
+  failed_when: false
+
+- name: List devices with available updates
+  become: true
+  ansible.builtin.command: fwupdmgr get-updates --json
+  register: firmware_updates
+  changed_when: false
+  failed_when: false
+
+- name: Apply firmware updates (non-interactive)
+  become: true
+  ansible.builtin.command: fwupdmgr update -y --no-reboot-check
+  when: firmware_updates.stdout is search('"Releases"')
+  register: firmware_apply
+  changed_when: "'Successfully installed firmware' in firmware_apply.stdout"
+  failed_when: false

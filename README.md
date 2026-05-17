@@ -14,10 +14,14 @@ Currently manages:
 3. Enable RPM Fusion (free + nonfree)
 4. Install base system packages: WiFi firmware, PipeWire audio, Bluetooth, printing, fonts, CLI tools
 5. Install NVIDIA driver (only on hosts where `hardware.has_nvidia: true`)
-6. Install hardware video acceleration (VA-API + Intel/AMD branches + Firefox OpenH264)
+6. Install multimedia codecs + hardware video acceleration (VA-API + Intel/AMD + Firefox OpenH264)
 7. Install Hyprland + companions from `solopasha/hyprland` COPR (GNOME stays as fallback session)
-8. Clone [atqamz/dotfiles](https://github.com/atqamz/dotfiles), run its `make stow`
-9. Restore SSH keys + secondary GPG identities at correct paths and modes
+8. Apply firmware updates via `fwupdmgr` (LVFS)
+9. Install Tailscale (manual login by default; optional automated join via SOPS-stored auth key)
+10. Install Cloudflare WARP CLI (auto-registers, manual `warp-cli connect`)
+11. Post-install tweaks: disable `NetworkManager-wait-online`, remove Gnome Software autostart, enable systemd-resolved DNS-over-TLS (Cloudflare 1.1.1.2)
+12. Clone [atqamz/dotfiles](https://github.com/atqamz/dotfiles), run its `make stow`
+13. Restore SSH keys + secondary GPG identities at correct paths and modes
 
 ## Not in MVP (future)
 
@@ -37,7 +41,8 @@ ansible/
   inventory/        # hosts.yaml, group_vars, host_vars
   playbooks/        # bootstrap.yaml, secrets-restore.yaml
   roles/            # hostname, dnf-tuning, rpm-fusion, base-packages,
-                    # nvidia, video-accel, hyprland, dotfiles,
+                    # nvidia, multimedia, hyprland, firmware,
+                    # tailscale, warp, system-tweaks, dotfiles,
                     # secrets-bootstrap
   requirements.yml  # ansible-galaxy collections
 

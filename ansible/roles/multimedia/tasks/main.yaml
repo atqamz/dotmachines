@@ -1,4 +1,24 @@
 ---
+- name: Install multimedia package group
+  become: true
+  ansible.builtin.dnf:
+    name: "@multimedia"
+    state: present
+    install_weak_deps: false
+
+- name: Swap ffmpeg-free for full ffmpeg (RPM Fusion)
+  become: true
+  ansible.builtin.dnf:
+    name: ffmpeg
+    state: present
+    allowerasing: true
+
+- name: Install sound-and-video group
+  become: true
+  ansible.builtin.dnf:
+    name: "@sound-and-video"
+    state: present
+
 - name: Install VA-API base packages
   become: true
   ansible.builtin.dnf:

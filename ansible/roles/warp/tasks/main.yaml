@@ -1,0 +1,32 @@
+---
+- name: Add Cloudflare WARP dnf repo
+  become: true
+  ansible.builtin.get_url:
+    url: https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo
+    dest: /etc/yum.repos.d/cloudflare-warp.repo
+    mode: '0644'
+
+- name: Install cloudflare-warp
+  become: true
+  ansible.builtin.dnf:
+    name: cloudflare-warp
+    state: present
+
+- name: Check WARP registration status
+  ansible.builtin.command: warp-cli account
+  register: warp_account
+  changed_when: false
+  failed_when: false
+
+- name: Register WARP client (non-interactive, accepts TOS)
+  ansible.builtin.command: warp-cli --accept-tos registration new
+  when: warp_account.rc != 0 or 'Missing registration' in (warp_account.stdout + warp_account.stderr)
+  register: warp_register
+  changed_when: warp_register.rc == 0
+
+- name: Notice — WARP installed but not auto-connected
+  ansible.builtin.debug:
+    msg: |
+      WARP installed and registered. Connect manually with:
+        warp-cli connect
+      To enable on every login, add a user systemd service or session hook later.

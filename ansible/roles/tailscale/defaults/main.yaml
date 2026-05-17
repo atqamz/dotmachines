@@ -1,0 +1,12 @@
+---
+# Optional: pre-generated one-off auth key from https://login.tailscale.com/admin/settings/keys
+# If unset (empty), the role installs Tailscale and enables the daemon but skips
+# `tailscale up` — user must run `sudo tailscale up` manually (browser flow).
+#
+# To enable automated join:
+#   - Generate a one-off auth key in admin console
+#   - Stage it as ~/repo/secrets/tailscale/auth-key.dec.txt, run scripts/encrypt.sh
+#   - Reference via host_vars: tailscale_auth_key: "{{ lookup('community.sops.sops', secrets_path + '/tailscale/auth-key.sops.txt') }}"
+tailscale_auth_key: ""
+
+tailscale_up_extra_args: ""

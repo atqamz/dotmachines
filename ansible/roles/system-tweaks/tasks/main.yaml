@@ -1,0 +1,40 @@
+---
+- name: Disable NetworkManager-wait-online.service (saves boot time)
+  become: true
+  ansible.builtin.systemd:
+    name: NetworkManager-wait-online.service
+    enabled: false
+    state: stopped
+  when: disable_nm_wait_online | bool
+
+- name: Remove Gnome Software autostart desktop entry
+  become: true
+  ansible.builtin.file:
+    path: /etc/xdg/autostart/org.gnome.Software.desktop
+    state: absent
+  when: disable_gnome_software_autostart | bool
+
+- name: Configure systemd-resolved DNS-over-TLS (Cloudflare)
+  when: enable_dns_over_tls | bool
+  block:
+    - name: Ensure /etc/systemd/resolved.conf.d exists
+      become: true
+      ansible.builtin.file:
+        path: /etc/systemd/resolved.conf.d
+        state: directory
+        mode: '0755'
+
+    - name: Drop DoT config
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/systemd/resolved.conf.d/99-dns-over-tls.conf
+        mode: '0644'
+        content: |
+          [Resolve]
+          DNS=1.1.1.2#security.cloudflare-dns.com
+          DNS=1.0.0.2#security.cloudflare-dns.com
+          DNS=2606:4700:4700::1112#security.cloudflare-dns.com
+          DNS=2606:4700:4700::1002#security.cloudflare-dns.com
+          DNSOverTLS=yes
+          Domains=~.
+      notify: Restart systemd-resolved
