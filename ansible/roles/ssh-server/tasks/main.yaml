@@ -30,3 +30,15 @@
     immediate: true
     state: enabled
     zone: "{{ ssh_firewalld_zone }}"
+
+- name: Drop key-only sshd config (disable password + keyboard-interactive auth)
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/10-key-only.conf
+    mode: '0644'
+    content: |
+      # Managed by dotmachines/ansible/roles/ssh-server
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin prohibit-password
+  notify: Restart sshd
