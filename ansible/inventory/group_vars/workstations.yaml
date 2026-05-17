@@ -2,9 +2,10 @@
 fedora_version_min: 43
 
 dotfiles_repo: "https://github.com/atqamz/dotfiles.git"
-dotfiles_path: "{{ ansible_env.HOME }}/dotfiles"
+dotfiles_path: "{{ ansible_facts['env']['HOME'] }}/dotfiles"
 
-hyprland_copr: "solopasha/hyprland"
+hyprland_copr: "lionheartp/Hyprland"
+# alebastr/sway-extras: misleading name — ships pinentry-rofi (rofi-based GPG prompt), not used for sway
 pinentry_copr: "alebastr/sway-extras"
 
 base_packages:

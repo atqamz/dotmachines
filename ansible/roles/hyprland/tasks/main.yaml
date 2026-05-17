@@ -1,4 +1,10 @@
 ---
+- name: Remove abandoned solopasha/hyprland COPR (legacy)
+  become: true
+  community.general.copr:
+    name: solopasha/hyprland
+    state: absent
+
 - name: Enable Hyprland COPR ({{ hyprland_copr }})
   become: true
   community.general.copr:
