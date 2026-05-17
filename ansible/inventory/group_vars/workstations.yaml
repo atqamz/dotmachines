@@ -82,9 +82,8 @@ hyprland_packages:
   - qt6-qtsvg
   - qt6-qtwayland
   - qt6-qtimageformats
-  - material-symbols-fonts
+  - material-icons-fonts
   - ddcutil
   - fish
-  - app2unit
   - swappy
   - pinentry-gnome3
