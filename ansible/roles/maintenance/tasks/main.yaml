@@ -1,0 +1,53 @@
+---
+- name: Ensure ansible-core is installed (needed for local self-run)
+  become: true
+  ansible.builtin.dnf:
+    name: ansible-core
+    state: present
+
+- name: Deploy maintenance wrapper script
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-maintenance.sh
+    dest: /usr/local/sbin/dotmachines-maintenance.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy maintenance systemd service
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-maintenance.service
+    dest: /etc/systemd/system/dotmachines-maintenance.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Deploy maintenance systemd timer
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-maintenance.timer
+    dest: /etc/systemd/system/dotmachines-maintenance.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Flush handlers so daemon-reload runs before enable
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable maintenance service (fires on boot via WantedBy=multi-user.target)
+  become: true
+  ansible.builtin.systemd:
+    name: dotmachines-maintenance.service
+    enabled: true
+
+- name: Enable + start maintenance weekly timer
+  become: true
+  ansible.builtin.systemd:
+    name: dotmachines-maintenance.timer
+    enabled: true
+    state: started

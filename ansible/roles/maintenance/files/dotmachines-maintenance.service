@@ -1,0 +1,16 @@
+[Unit]
+Description=dotmachines maintenance run
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/home/atqa/repo/dotmachines/ansible/playbooks/maintenance.yaml
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 30
+ExecStart=/usr/local/sbin/dotmachines-maintenance.sh
+TimeoutStartSec=30min
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target
