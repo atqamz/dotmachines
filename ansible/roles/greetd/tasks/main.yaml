@@ -1,0 +1,45 @@
+---
+- name: Install greetd + tuigreet
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - greetd
+      - tuigreet
+    state: present
+
+- name: Remove gdm (replaced by greetd)
+  become: true
+  ansible.builtin.dnf:
+    name: gdm
+    state: absent
+
+- name: Deploy greetd config
+  become: true
+  ansible.builtin.copy:
+    src: config.toml
+    dest: /etc/greetd/config.toml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Set graphical.target as default
+  become: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/graphical.target
+    dest: /etc/systemd/system/default.target
+    state: link
+    force: true
+
+- name: Disable gdm.service if it exists
+  become: true
+  ansible.builtin.systemd:
+    name: gdm.service
+    enabled: false
+    masked: false
+  failed_when: false
+
+- name: Enable greetd.service
+  become: true
+  ansible.builtin.systemd:
+    name: greetd.service
+    enabled: true

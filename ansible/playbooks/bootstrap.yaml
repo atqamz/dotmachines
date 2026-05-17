@@ -34,6 +34,8 @@
       tags: [packages, libvirt, virtualization]
     - role: hyprland
       tags: [packages, hyprland, desktop]
+    - role: greetd
+      tags: [greetd, desktop]
     - role: gnome-minimize
       tags: [packages, gnome-minimize, debloat]
     - role: firmware
