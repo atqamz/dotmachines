@@ -26,6 +26,8 @@
       tags: [packages, multimedia]
     - role: hyprland
       tags: [packages, hyprland, desktop]
+    - role: gnome-minimize
+      tags: [packages, gnome-minimize, debloat]
     - role: firmware
       tags: [firmware]
     - role: tailscale

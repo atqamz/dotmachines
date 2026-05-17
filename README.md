@@ -16,13 +16,14 @@ Currently manages:
 5. Install NVIDIA driver (only on hosts where `hardware.has_nvidia: true`)
 6. Install multimedia codecs + hardware video acceleration (VA-API + Intel/AMD + Firefox OpenH264)
 7. Install Hyprland + companions from `solopasha/hyprland` COPR (GNOME stays as fallback session)
-8. Apply firmware updates via `fwupdmgr` (LVFS)
-9. Install Tailscale (manual login by default; optional automated join via SOPS-stored auth key)
-10. Install Cloudflare WARP CLI (auto-registers, manual `warp-cli connect`)
-11. Post-install tweaks: disable `NetworkManager-wait-online`, remove Gnome Software autostart, enable systemd-resolved DNS-over-TLS (Cloudflare 1.1.1.2)
-12. Clone [atqamz/dotfiles](https://github.com/atqamz/dotfiles), run its `make stow`
-13. Restore SSH keys + secondary GPG identities at correct paths and modes
-14. Enable sshd + open SSH port in firewalld (inbound SSH allowed via authorized_keys)
+8. Strip GNOME bloat (tour/docs, widgets, media players, libreoffice, flatpak runtime + flathub remote, abrt, malcontent, gnome-software); install lean replacements (`nano`, `snapshot`)
+9. Apply firmware updates via `fwupdmgr` (LVFS)
+10. Install Tailscale (manual login by default; optional automated join via SOPS-stored auth key)
+11. Install Cloudflare WARP CLI (auto-registers, manual `warp-cli connect`)
+12. Post-install tweaks: disable `NetworkManager-wait-online`, remove Gnome Software autostart, enable systemd-resolved DNS-over-TLS (Cloudflare 1.1.1.2)
+13. Clone [atqamz/dotfiles](https://github.com/atqamz/dotfiles), run its `make stow`
+14. Restore SSH keys + secondary GPG identities at correct paths and modes
+15. Enable sshd (key-only) + open SSH port in firewalld
 
 ## Not in MVP (future)
 

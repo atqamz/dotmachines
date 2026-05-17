@@ -1,0 +1,76 @@
+---
+# 1. Uninstall any flatpak apps BEFORE removing flatpak runtime
+- name: Check flatpak presence
+  ansible.builtin.stat:
+    path: /usr/bin/flatpak
+  register: gnome_minimize_flatpak_q
+
+- name: Uninstall all system-scope flatpak apps (if any)
+  become: true
+  ansible.builtin.command: flatpak uninstall --all --system -y --noninteractive
+  when: gnome_minimize_flatpak_q.stat.exists
+  register: gnome_minimize_fp_sys
+  changed_when: "'Uninstalling' in gnome_minimize_fp_sys.stdout"
+  failed_when: false
+
+- name: Uninstall all user-scope flatpak apps (if any)
+  ansible.builtin.command: flatpak uninstall --all --user -y --noninteractive
+  when: gnome_minimize_flatpak_q.stat.exists
+  register: gnome_minimize_fp_user
+  changed_when: "'Uninstalling' in gnome_minimize_fp_user.stdout"
+  failed_when: false
+
+# 2. Remove apps in groups
+- name: Remove tour + docs
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.tour_docs }}"
+    state: absent
+
+- name: Remove widget apps (calendar/weather/clocks/maps/contacts)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.widgets }}"
+    state: absent
+
+- name: Remove media apps (totem/rhythmbox/gnome-music)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.media }}"
+    state: absent
+
+- name: Remove peripheral apps (cheese/simple-scan/mediawriter)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.peripherals }}"
+    state: absent
+
+- name: Remove LibreOffice (wildcard)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.office_patterns }}"
+    state: absent
+
+- name: Remove system bloat (abrt/malcontent/mcelog/gnome-software)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.system_bloat }}"
+    state: absent
+
+- name: Remove flatpak runtime + remotes
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_remove.flatpak }}"
+    state: absent
+
+- name: Clean orphan dependencies
+  become: true
+  ansible.builtin.dnf:
+    autoremove: true
+
+# 3. Install lean GNOME replacements
+- name: Install lean replacements (notepad + camera)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_install }}"
+    state: present

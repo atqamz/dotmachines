@@ -1,0 +1,54 @@
+---
+gnome_remove:
+  # Welcome tour + offline help
+  tour_docs:
+    - gnome-tour
+    - gnome-user-docs
+    - gnome-getting-started-docs
+    - yelp
+  # Widget apps
+  widgets:
+    - gnome-calendar
+    - gnome-weather
+    - gnome-clocks
+    - gnome-maps
+    - gnome-contacts
+  # Audio + video players
+  media:
+    - totem
+    - rhythmbox
+    - gnome-music
+  # Peripheral apps
+  peripherals:
+    - cheese
+    - simple-scan
+    - mediawriter
+  # Office suite (wildcard handled separately via shell)
+  office_patterns:
+    - "libreoffice-*"
+  # Crash reporting + parental + hw mce
+  system_bloat:
+    - abrt
+    - abrt-cli
+    - abrt-desktop
+    - abrt-tui
+    - abrt-addon-ccpp
+    - abrt-addon-kerneloops
+    - abrt-addon-pstoreoops
+    - abrt-addon-vmcore
+    - abrt-addon-xorg
+    - abrt-dbus
+    - malcontent
+    - mcelog
+    - gnome-software
+  # Flatpak + flathub remote (autoremove of gnome-software-fedora-flatpak-remotes etc handled by autoremove)
+  flatpak:
+    - flatpak
+    - fedora-flathub-remote
+    - flatpak-libs
+    - flatpak-selinux
+
+# Lean replacements installed after removal pass
+gnome_install:
+  - nano                # CLI notepad (usually already in @core)
+  - snapshot            # camera app (GNOME's new Cheese successor)
