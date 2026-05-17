@@ -42,6 +42,8 @@
       tags: [tailscale, network]
     - role: warp
       tags: [warp, network]
+    - role: unityhub
+      tags: [packages, unityhub, desktop]
     - role: system-tweaks
       tags: [tweaks]
     - role: dotfiles
