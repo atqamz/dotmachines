@@ -54,3 +54,5 @@
       tags: [secrets]
     - role: ssh-server
       tags: [ssh, network]
+    - role: maintenance
+      tags: [maintenance, systemd]

@@ -1,0 +1,11 @@
+[Unit]
+Description=Weekly dotmachines maintenance
+
+[Timer]
+OnCalendar=weekly
+Persistent=true
+RandomizedDelaySec=30min
+Unit=dotmachines-maintenance.service
+
+[Install]
+WantedBy=timers.target

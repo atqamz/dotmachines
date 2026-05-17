@@ -1,0 +1,61 @@
+---
+- name: Routine maintenance for Fedora workstation
+  hosts: workstations
+  gather_facts: true
+  gather_subset:
+    - "!all"
+    - "!min"
+    - distribution
+    - env
+    - user_id
+  pre_tasks:
+    - name: Verify Fedora
+      ansible.builtin.assert:
+        that:
+          - ansible_facts['distribution'] == "Fedora"
+          - ansible_facts['distribution_major_version'] | int >= fedora_version_min
+        fail_msg: >-
+          This playbook targets Fedora >= {{ fedora_version_min }}.
+          Got {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }}.
+
+  tasks:
+    - name: Upgrade all dnf packages
+      become: true
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+        update_cache: true
+
+    - name: Autoremove orphaned dnf packages
+      become: true
+      ansible.builtin.dnf:
+        autoremove: true
+
+    - name: Refresh LVFS metadata
+      become: true
+      ansible.builtin.command: fwupdmgr refresh --force
+      register: firmware_refresh
+      changed_when: false
+      failed_when: false
+
+    - name: List firmware updates available
+      become: true
+      ansible.builtin.command: fwupdmgr get-updates --json
+      register: firmware_updates
+      changed_when: false
+      failed_when: false
+
+    - name: Apply firmware updates (non-interactive)
+      become: true
+      ansible.builtin.command: fwupdmgr update -y --no-reboot-check
+      when: firmware_updates.stdout is search('"Releases"')
+      register: firmware_apply
+      changed_when: "'Successfully installed firmware' in firmware_apply.stdout"
+      failed_when: false
+
+    - name: Update tailscale
+      become: true
+      ansible.builtin.command: tailscale update --yes
+      register: tailscale_update
+      changed_when: "'Updating Tailscale' in tailscale_update.stdout or 'updated' in tailscale_update.stdout"
+      failed_when: false
