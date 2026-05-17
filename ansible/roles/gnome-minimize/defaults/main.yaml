@@ -150,6 +150,10 @@ gnome_remove:
     - zita-rev1
   # GNOME apps unused on a Hyprland-first workstation.
   # Conservative cut: keeps gnome-shell + gnome-control-center for fallback session.
+  # NOTE: evolution-data-server (and its langpacks) is kept — F44 gnome-shell
+  # hard-requires libecal-2.0.so.3 / libedataserver-1.2.so.27 from it for the
+  # calendar/contacts integration. Only the evolution app and its plugins are
+  # removed; the data-server backend stays.
   gnome_apps:
     - gnome-boxes
     - gnome-connections
@@ -159,7 +163,12 @@ gnome_remove:
     - gnome-classic-session
     - "gnome-shell-extension-*"
     - evolution
-    - "evolution-*"
+    - evolution-help
+    - evolution-bogofilter
+    - evolution-spamassassin
+    - evolution-pst
+    - evolution-mapi
+    - evolution-ews
 
 # Minimal GNOME fallback session: enough to log in and use the desktop
 # if Hyprland breaks. Pinned User-installed so the autoremove sweep below
