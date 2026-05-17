@@ -14,7 +14,9 @@ base_packages:
     - "@hardware-support"
     - "@fonts"
     - "@legacy-fonts"
-    - "@audio"
+    # @audio dropped: Fedora ships it as "Audio Production" (pulls ardour9,
+    # audacity, Carla, musescore, guitarix, hydrogen, rosegarden, qjackctl,
+    # jack-mixer, fluidsynth, etc.). Pipewire stack is explicit below.
   wifi:
     - linux-firmware
     - iw
@@ -67,6 +69,8 @@ base_packages:
     - cliphist
     - wtype
     - rofimoji
+    - alacritty
+    - openssh-askpass
 
 hyprland_packages:
   - hyprland
