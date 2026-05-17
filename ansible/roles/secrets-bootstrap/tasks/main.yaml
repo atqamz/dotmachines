@@ -51,7 +51,7 @@
   ansible.builtin.shell: >-
     set -o pipefail;
     sops --decrypt --input-type binary --output-type binary
-      {{ secrets_path }}/gpg/{{ item }}.sops.asc
+    {{ secrets_path }}/gpg/{{ item }}.sops.asc
     | gpg --batch --import
   args:
     executable: /bin/bash
