@@ -78,6 +78,7 @@ gnome_remove:
     - ffado
     - fluid-soundfont-gm
     - fluidsynth
+    - vmpk                  # MIDI keyboard GUI, depends on fluid-soundfont-gm
     - frescobaldi
     - calf
     - arpage
