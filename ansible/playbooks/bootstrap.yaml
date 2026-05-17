@@ -24,6 +24,8 @@
       tags: [packages, nvidia]
     - role: multimedia
       tags: [packages, multimedia]
+    - role: libvirt
+      tags: [packages, libvirt, virtualization]
     - role: hyprland
       tags: [packages, hyprland, desktop]
     - role: gnome-minimize
