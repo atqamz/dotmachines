@@ -1,5 +1,6 @@
 ---
 hardware:
-  has_nvidia: false
+  has_nvidia: true
   igpu: intel
+  dgpu: "NVIDIA RTX 4050"
   model: "Acer Swift X14 72G"
