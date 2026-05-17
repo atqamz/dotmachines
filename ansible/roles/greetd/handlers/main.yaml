@@ -1,0 +1,16 @@
+---
+- name: Reload systemd
+  become: true
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Reset greetd failure state
+  become: true
+  ansible.builtin.command: systemctl reset-failed greetd.service
+  changed_when: false
+
+- name: Restart greetd
+  become: true
+  ansible.builtin.systemd:
+    name: greetd.service
+    state: restarted

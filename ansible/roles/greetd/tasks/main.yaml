@@ -6,12 +6,20 @@
       - greetd
       - tuigreet
     state: present
+  notify:
+    - Reload systemd
+    - Reset greetd failure state
+    - Restart greetd
 
 - name: Remove gdm (replaced by greetd)
   become: true
   ansible.builtin.dnf:
     name: gdm
     state: absent
+  notify:
+    - Reload systemd
+    - Reset greetd failure state
+    - Restart greetd
 
 - name: Deploy greetd config
   become: true
@@ -21,6 +29,9 @@
     owner: root
     group: root
     mode: '0644'
+  notify:
+    - Reset greetd failure state
+    - Restart greetd
 
 - name: Set graphical.target as default
   become: true
