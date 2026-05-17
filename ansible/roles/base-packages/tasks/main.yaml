@@ -1,0 +1,60 @@
+---
+- name: Install base package groups
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.groups }}"
+    state: present
+
+- name: Install WiFi firmware + NetworkManager
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.wifi }}"
+    state: present
+
+- name: Install audio stack (PipeWire)
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.audio }}"
+    state: present
+
+- name: Install Bluetooth stack
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.bluetooth }}"
+    state: present
+
+- name: Install printing stack
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.printing }}"
+    state: present
+
+- name: Install hardware monitoring tools
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.monitoring }}"
+    state: present
+
+- name: Install brightness + media controls
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.input_media }}"
+    state: present
+
+- name: Install filesystem support
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.filesystem }}"
+    state: present
+
+- name: Install fonts
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.fonts }}"
+    state: present
+
+- name: Install CLI tools
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ base_packages.cli }}"
+    state: present

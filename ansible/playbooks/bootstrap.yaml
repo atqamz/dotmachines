@@ -1,0 +1,32 @@
+---
+- name: Bootstrap Fedora workstation
+  hosts: workstations
+  gather_facts: true
+  pre_tasks:
+    - name: Verify Fedora
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution == "Fedora"
+          - ansible_distribution_major_version | int >= fedora_version_min
+        fail_msg: >-
+          This playbook targets Fedora >= {{ fedora_version_min }}.
+          Got {{ ansible_distribution }} {{ ansible_distribution_major_version }}.
+  roles:
+    - role: hostname
+      tags: [hostname]
+    - role: dnf-tuning
+      tags: [dnf, dnf-tuning]
+    - role: rpm-fusion
+      tags: [dnf, rpm-fusion]
+    - role: base-packages
+      tags: [packages, base]
+    - role: nvidia
+      tags: [packages, nvidia]
+    - role: video-accel
+      tags: [packages, video-accel]
+    - role: hyprland
+      tags: [packages, hyprland, desktop]
+    - role: dotfiles
+      tags: [dotfiles]
+    - role: secrets-bootstrap
+      tags: [secrets]

@@ -1,0 +1,14 @@
+---
+- name: Tune /etc/dnf/dnf.conf
+  become: true
+  community.general.ini_file:
+    path: /etc/dnf/dnf.conf
+    section: main
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    mode: '0644'
+  loop:
+    - {key: max_parallel_downloads, value: "10"}
+    - {key: fastestmirror, value: "True"}
+    - {key: keepcache, value: "True"}

@@ -1,0 +1,60 @@
+---
+- name: Install VA-API base packages
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - ffmpeg-libs
+      - libva
+      - libva-utils
+    state: present
+
+- name: Intel iGPU — swap to intel-media-driver + install legacy libva-intel-driver
+  when: hardware.igpu == 'intel'
+  block:
+    - name: Install intel-media-driver (swaps out libva-intel-media-driver via allowerasing)
+      become: true
+      ansible.builtin.dnf:
+        name: intel-media-driver
+        state: present
+        allowerasing: true
+
+    - name: Ensure libva-intel-media-driver removed (post-swap cleanup)
+      become: true
+      ansible.builtin.dnf:
+        name: libva-intel-media-driver
+        state: absent
+
+    - name: Install libva-intel-driver (legacy fallback)
+      become: true
+      ansible.builtin.dnf:
+        name: libva-intel-driver
+        state: present
+
+- name: AMD iGPU — install Mesa freeworld VA drivers
+  when: hardware.igpu == 'amd'
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - mesa-va-drivers-freeworld
+      - mesa-va-drivers-freeworld.i686
+    state: present
+    allowerasing: true
+
+- name: Install OpenH264 for Firefox
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - openh264
+      - gstreamer1-plugin-openh264
+      - mozilla-openh264
+    state: present
+
+- name: Enable fedora-cisco-openh264 repo
+  become: true
+  community.general.ini_file:
+    path: /etc/yum.repos.d/fedora-cisco-openh264.repo
+    section: fedora-cisco-openh264
+    option: enabled
+    value: "1"
+    no_extra_spaces: true
+    mode: '0644'

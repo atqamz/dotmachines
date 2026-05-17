@@ -1,0 +1,12 @@
+creation_rules:
+  # structured (yaml, json) — auto-detected store
+  - path_regex: .*\.(sops|dec)\.(yaml|json)$
+    pgp: F1F60517602888C8D5E486EB8AD7D4A302EE6771
+  # dotenv (env files)
+  - path_regex: .*\.(sops|dec)\.env$
+    pgp: F1F60517602888C8D5E486EB8AD7D4A302EE6771
+    stores:
+      dotenv: {}
+  # binary (ssh keys, pem, opaque text)
+  - path_regex: .*\.(sops|dec)\.(key|pub|pem|txt|htpasswd)$
+    pgp: F1F60517602888C8D5E486EB8AD7D4A302EE6771

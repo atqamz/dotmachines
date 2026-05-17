@@ -1,0 +1,18 @@
+---
+- name: Enable Hyprland COPR ({{ hyprland_copr }})
+  become: true
+  community.general.copr:
+    name: "{{ hyprland_copr }}"
+    state: enabled
+
+- name: Enable pinentry-rofi COPR ({{ pinentry_copr }})
+  become: true
+  community.general.copr:
+    name: "{{ pinentry_copr }}"
+    state: enabled
+
+- name: Install Hyprland + companion packages
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ hyprland_packages }}"
+    state: present

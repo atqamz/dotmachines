@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    workstations:
+      hosts:
+        sfx14:
+          ansible_connection: local
+        pavg15:
+          ansible_connection: local

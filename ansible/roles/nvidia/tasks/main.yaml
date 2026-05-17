@@ -1,0 +1,32 @@
+---
+- name: NVIDIA driver install (gated on hardware.has_nvidia)
+  when: hardware.has_nvidia | default(false)
+  block:
+    - name: Install kernel headers + devel (required for akmod)
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - kernel-headers
+          - kernel-devel
+        state: present
+
+    - name: Install NVIDIA driver via RPM Fusion
+      become: true
+      ansible.builtin.dnf:
+        name:
+          - akmod-nvidia
+          - xorg-x11-drv-nvidia-cuda
+        state: present
+
+    - name: Replace ffmpeg-free with full ffmpeg (RPM Fusion)
+      become: true
+      ansible.builtin.dnf:
+        name: ffmpeg
+        state: present
+        allowerasing: true
+
+    - name: Show reboot reminder
+      ansible.builtin.debug:
+        msg: >-
+          NVIDIA driver installed. Reboot required before kernel module loads.
+          Verify with `nvidia-smi` after reboot.

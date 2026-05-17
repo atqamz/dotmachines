@@ -1,0 +1,5 @@
+---
+hardware:
+  has_nvidia: false
+  igpu: intel
+  model: "Acer Swift X14 72G"

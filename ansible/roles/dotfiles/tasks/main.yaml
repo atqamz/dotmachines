@@ -1,0 +1,20 @@
+---
+- name: Install stow
+  become: true
+  ansible.builtin.dnf:
+    name: stow
+    state: present
+
+- name: Clone dotfiles repo
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_path }}"
+    version: master
+    update: false  # don't pull on subsequent runs; user manages dotfiles separately
+
+- name: Run dotfiles `make stow`
+  community.general.make:
+    chdir: "{{ dotfiles_path }}"
+    target: stow
+  register: dotfiles_stow
+  changed_when: "'LINK:' in dotfiles_stow.stdout or 'Backing up' in dotfiles_stow.stdout"

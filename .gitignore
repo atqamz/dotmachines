@@ -1,0 +1,11 @@
+# SOPS decrypted files — never commit
+*.dec.*
+
+# Ansible runtime
+ansible/.ansible/
+*.retry
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo

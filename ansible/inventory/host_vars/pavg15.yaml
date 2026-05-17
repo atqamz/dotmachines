@@ -1,0 +1,5 @@
+---
+hardware:
+  has_nvidia: true
+  igpu: amd
+  model: "HP Pavilion Gaming 15 (Ryzen 5 4600H, GTX 1650)"

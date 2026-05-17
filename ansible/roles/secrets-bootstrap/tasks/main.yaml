@@ -1,0 +1,54 @@
+---
+- name: Verify secrets repo is cloned at {{ secrets_path }}
+  ansible.builtin.stat:
+    path: "{{ secrets_path }}/.sops.yaml"
+  register: secrets_repo_check
+
+- name: Fail if secrets repo missing
+  ansible.builtin.fail:
+    msg: >-
+      Expected secrets repo at {{ secrets_path }}.
+      Clone it first:  git clone https://github.com/atqamz/secrets.git {{ secrets_path }}
+  when: not secrets_repo_check.stat.exists
+
+- name: Verify primary GPG key is imported (root of trust for SOPS)
+  ansible.builtin.command: gpg --list-secret-keys F1F60517602888C8D5E486EB8AD7D4A302EE6771
+  register: gpg_check
+  changed_when: false
+  failed_when: gpg_check.rc != 0
+
+- name: Ensure ~/.ssh exists with strict perms
+  ansible.builtin.file:
+    path: "{{ ssh_dir }}"
+    state: directory
+    mode: '0700'
+
+- name: Decrypt + place SSH files (binary type)
+  ansible.builtin.shell: >-
+    sops --decrypt --input-type binary --output-type binary {{ item.src | quote }}
+    > {{ item.dest | quote }}
+  args:
+    creates: "{{ item.dest }}"
+  loop: "{{ ssh_files }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Apply correct mode on SSH files
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ ssh_files }}"
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Decrypt + import secondary GPG keys
+  ansible.builtin.shell: >-
+    set -o pipefail;
+    sops --decrypt --input-type binary --output-type binary
+      {{ secrets_path }}/gpg/{{ item }}.sops.asc
+    | gpg --batch --import
+  args:
+    executable: /bin/bash
+  loop: "{{ gpg_secondary_keys }}"
+  register: gpg_import
+  changed_when: "'imported' in (gpg_import.stderr | default(''))"

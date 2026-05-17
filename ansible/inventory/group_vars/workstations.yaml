@@ -1,0 +1,78 @@
+---
+fedora_version_min: 43
+
+dotfiles_repo: "https://github.com/atqamz/dotfiles.git"
+dotfiles_path: "{{ ansible_env.HOME }}/dotfiles"
+
+hyprland_copr: "solopasha/hyprland"
+pinentry_copr: "alebastr/sway-extras"
+
+base_packages:
+  groups:
+    - "@core"
+    - "@hardware-support"
+    - "@fonts"
+    - "@legacy-fonts"
+    - "@audio"
+  wifi:
+    - linux-firmware
+    - iw
+    - iwlwifi-mvm-firmware
+    - iwlwifi-dvm-firmware
+    - NetworkManager-wifi
+  audio:
+    - pipewire
+    - pipewire-alsa
+    - pipewire-pulseaudio
+    - wireplumber
+    - pavucontrol
+    - alsa-sof-firmware
+    - alsa-plugins-pulseaudio
+    - alsa-utils
+  bluetooth:
+    - bluez
+    - bluez-tools
+    - bluez-libs
+    - blueman
+  printing:
+    - cups
+    - system-config-printer
+  monitoring:
+    - upower
+    - pciutils
+    - usbutils
+    - lm_sensors
+  input_media:
+    - brightnessctl
+    - playerctl
+  filesystem:
+    - gvfs
+    - udisks2
+    - ntfs-3g
+  fonts:
+    - fontawesome-fonts-all
+    - jetbrains-mono-fonts
+  cli:
+    - git
+    - git-lfs
+    - htop
+    - btop
+    - nvtop
+    - 7zip
+    - fastfetch
+    - wl-clipboard
+    - grim
+    - slurp
+    - cliphist
+    - wtype
+    - rofimoji
+
+hyprland_packages:
+  - hyprland
+  - hyprlock
+  - hypridle
+  - hyprpolkitagent
+  - waybar
+  - wlogout
+  - rofi
+  - pinentry-rofi
