@@ -54,34 +54,98 @@ gnome_remove:
     - flatpak-selinux
   # Audio Production cruft. Previously pulled in by @audio group on Fedora;
   # group is now dropped from base-packages, this purges any existing installs.
+  # NOTE: keep PipeWire stack (pipewire-*, wireplumber, pavucontrol, alsa-utils,
+  # sbc, alsa-firmware, multimedia-menus, kernel-tools). Those are explicit in
+  # base-packages.audio.
   audio_prod:
+    # DAW / editors
+    - ardour8
     - ardour9
     - audacity
-    - Carla
-    - lv2-carla
     - musescore
     - musescore-data
     - musescore-soundfont
     - musescoreicon-fonts
+    - muse
+    - rosegarden4
+    - qtractor
+    - lilypond
+    - frescobaldi
+    - mup
+    # Synths / samplers
+    - Add64
+    - Carla
+    - lv2-carla
+    - ams
+    - drumkv1
     - guitarix
     - hydrogen
-    - rosegarden4
-    - qjackctl
-    - lsp-plugins-jack
-    - jack-mixer
+    - samplv1
+    - synthv1
+    - yoshimi
+    - zynaddsubfx
+    - sooperlooper
+    - rakarrack
+    # JACK / MIDI / routing
     - a2jmidid
-    - alsamixergui
-    - ams
-    - Add64
-    - drumkv1
-    - dssi
-    - ffado
+    - jack-mixer
+    - qjackctl
+    - qmidiarp
+    - qsynth                # needs soundfont2-default (provided by fluid-soundfont-gm)
+    - raysession
+    - lash
+    - harmonyseq
+    - timidity++            # needs soundfont2-default
+    - vmpk                  # needs fluid-soundfont-gm
+    # Soundfonts
     - fluid-soundfont-gm
     - fluidsynth
-    - vmpk                  # MIDI keyboard GUI, depends on fluid-soundfont-gm
-    - frescobaldi
-    - calf
+    # Mixers / analyzers
+    - alsamixergui
+    - alsa-tools
+    - qastools
+    - jaaa
+    - japa
+    - jmeters
+    - mudita24
+    # Firewire / DSSI / arpeggio
+    - ffado
+    - dssi
     - arpage
+    # LADSPA plugin sets
+    - ladspa
+    - ladspa-amb-plugins
+    - ladspa-autotalent-plugins
+    - ladspa-blop-plugins
+    - ladspa-cmt-plugins
+    - ladspa-fil-plugins
+    - ladspa-mcp-plugins
+    - ladspa-rev-plugins
+    - ladspa-tap-plugins
+    - ladspa-vco-plugins
+    # LV2 plugin sets
+    - lv2
+    - lv2-abGate
+    - "lv2-c++-tools"
+    - lv2-drumkv1
+    - lv2-fabla
+    - lv2-ll-plugins
+    - lv2-newtonator
+    - lv2-samplv1
+    - lv2-sorcer
+    - lv2-swh-plugins
+    - lv2-synthv1
+    - lv2-vocoder-plugins
+    - lv2-x42-plugins
+    - lv2-zynadd-plugins
+    - lv2dynparam
+    - lsp-plugins-jack
+    - lsp-plugins-ladspa
+    - lsp-plugins-lv2
+    - calf
+    # Misc reverb / pitch utils
+    - zita-at1
+    - zita-rev1
   # GNOME apps unused on a Hyprland-first workstation.
   # Conservative cut: keeps gnome-shell + gnome-control-center for fallback session.
   gnome_apps:
