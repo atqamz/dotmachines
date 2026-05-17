@@ -11,6 +11,12 @@
       Clone it first:  git clone https://github.com/atqamz/secrets.git {{ secrets_path }}
   when: not secrets_repo_check.stat.exists
 
+- name: Pull secrets repo (--ff-only) if cloned
+  ansible.builtin.command: git -C {{ secrets_path }} pull --ff-only
+  register: secrets_pull
+  changed_when: "'Already up to date' not in secrets_pull.stdout"
+  when: secrets_repo_check.stat.exists
+
 - name: Verify primary GPG key is imported (root of trust for SOPS)
   ansible.builtin.command: gpg --list-secret-keys F1F60517602888C8D5E486EB8AD7D4A302EE6771
   register: gpg_check
