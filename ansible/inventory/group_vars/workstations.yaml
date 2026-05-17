@@ -5,8 +5,7 @@ dotfiles_repo: "https://github.com/atqamz/dotfiles.git"
 dotfiles_path: "{{ ansible_facts['env']['HOME'] }}/dotfiles"
 
 hyprland_copr: "lionheartp/Hyprland"
-# alebastr/sway-extras: misleading name — ships pinentry-rofi (rofi-based GPG prompt), not used for sway
-pinentry_copr: "alebastr/sway-extras"
+quickshell_copr: "errornointernet/quickshell"
 
 base_packages:
   groups:
@@ -68,7 +67,6 @@ base_packages:
     - slurp
     - cliphist
     - wtype
-    - rofimoji
     - alacritty
     - openssh-askpass
 
@@ -78,7 +76,15 @@ hyprland_packages:
   - hyprlock
   - hypridle
   - hyprpolkitagent
-  - waybar
-  - wlogout
-  - rofi
-  - pinentry-rofi
+  - quickshell
+  - qt6-qtdeclarative
+  - qt6-qt5compat
+  - qt6-qtsvg
+  - qt6-qtwayland
+  - qt6-qtimageformats
+  - material-symbols-fonts
+  - ddcutil
+  - fish
+  - app2unit
+  - swappy
+  - pinentry-gnome3
