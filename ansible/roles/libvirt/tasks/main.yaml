@@ -23,13 +23,13 @@
 - name: Add user to libvirt group
   become: true
   ansible.builtin.user:
-    name: "{{ ansible_user_id }}"
+    name: "{{ ansible_facts['user_id'] }}"
     groups: libvirt
     append: true
 
 - name: Notice — re-login required for libvirt group to apply
   ansible.builtin.debug:
     msg: |
-      User {{ ansible_user_id }} added to libvirt group.
+      User {{ ansible_facts['user_id'] }} added to libvirt group.
       Log out and back in (or reboot) for group membership to take effect.
       Then run `virsh list` to confirm non-root access works.

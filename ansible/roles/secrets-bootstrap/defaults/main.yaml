@@ -1,9 +1,9 @@
 ---
 # Path to the cloned `secrets` private repo. Override via:
 #   ansible-playbook ... -e secrets_path=~/repo/secrets
-secrets_path: "{{ ansible_env.HOME }}/repo/secrets"
+secrets_path: "{{ ansible_facts['env']['HOME'] }}/repo/secrets"
 
-ssh_dir: "{{ ansible_env.HOME }}/.ssh"
+ssh_dir: "{{ ansible_facts['env']['HOME'] }}/.ssh"
 
 ssh_files:
   - src: "{{ secrets_path }}/ssh/id_ed25519.sops.key"
