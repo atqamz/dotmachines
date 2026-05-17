@@ -16,7 +16,7 @@ Currently manages:
 5. Install NVIDIA driver (only on hosts where `hardware.has_nvidia: true`)
 6. Install multimedia codecs + hardware video acceleration (VA-API + Intel/AMD + Firefox OpenH264)
 7. Install libvirt + qemu/kvm + virt-manager + edk2-ovmf + swtpm (for gnome-boxes / VM use)
-8. Install Hyprland + companions from `solopasha/hyprland` COPR (GNOME stays as fallback session)
+8. Install Hyprland (from `lionheartp/Hyprland` COPR) + quickshell (from `errornointernet/quickshell` COPR) as unified QML shell — GNOME stays as fallback session
 9. Strip GNOME bloat (tour/docs, widgets, media players, libreoffice, flatpak runtime + flathub remote, abrt, malcontent, gnome-software); install lean replacements (`nano`, `snapshot`)
 10. Apply firmware updates via `fwupdmgr` (LVFS)
 11. Install Tailscale (manual login by default; optional automated join via SOPS-stored auth key)

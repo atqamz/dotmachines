@@ -5,20 +5,49 @@
     name: solopasha/hyprland
     state: absent
 
+- name: Remove alebastr/sway-extras COPR (pinentry-rofi replaced by pinentry-gnome3)
+  become: true
+  community.general.copr:
+    name: alebastr/sway-extras
+    state: absent
+
 - name: Enable Hyprland COPR ({{ hyprland_copr }})
   become: true
   community.general.copr:
     name: "{{ hyprland_copr }}"
     state: enabled
 
-- name: Enable pinentry-rofi COPR ({{ pinentry_copr }})
+- name: Enable Quickshell COPR ({{ quickshell_copr }})
   become: true
   community.general.copr:
-    name: "{{ pinentry_copr }}"
+    name: "{{ quickshell_copr }}"
     state: enabled
+
+- name: Remove legacy Hyprland UI stack (waybar/swaync/wlogout/rofi/pinentry-rofi/rofimoji)
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - waybar
+      - swaync
+      - wlogout
+      - rofi
+      - pinentry-rofi
+      - rofimoji
+    state: absent
+    autoremove: true
 
 - name: Install Hyprland + companion packages
   become: true
   ansible.builtin.dnf:
     name: "{{ hyprland_packages }}"
     state: present
+
+- name: Remove orphan dotfiles symlinks for retired UI stack
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/{{ item }}"
+    state: absent
+  loop:
+    - waybar
+    - swaync
+    - wlogout
+    - rofi
