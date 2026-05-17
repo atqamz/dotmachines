@@ -74,6 +74,7 @@ base_packages:
 
 hyprland_packages:
   - hyprland
+  - hyprland-guiutils
   - hyprlock
   - hypridle
   - hyprpolkitagent
