@@ -9,3 +9,4 @@ ansible/.ansible/
 .DS_Store
 *.swp
 *.swo
+.ansible_fact_cache/

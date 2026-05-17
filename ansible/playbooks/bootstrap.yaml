@@ -2,15 +2,21 @@
 - name: Bootstrap Fedora workstation
   hosts: workstations
   gather_facts: true
+  gather_subset:
+    - "!all"
+    - "!min"
+    - distribution
+    - env
+    - user_id
   pre_tasks:
     - name: Verify Fedora
       ansible.builtin.assert:
         that:
-          - ansible_distribution == "Fedora"
-          - ansible_distribution_major_version | int >= fedora_version_min
+          - ansible_facts['distribution'] == "Fedora"
+          - ansible_facts['distribution_major_version'] | int >= fedora_version_min
         fail_msg: >-
           This playbook targets Fedora >= {{ fedora_version_min }}.
-          Got {{ ansible_distribution }} {{ ansible_distribution_major_version }}.
+          Got {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_major_version'] }}.
   roles:
     - role: hostname
       tags: [hostname]
