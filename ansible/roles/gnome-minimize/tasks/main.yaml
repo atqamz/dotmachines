@@ -77,12 +77,21 @@
     name: "{{ gnome_remove.gnome_apps }}"
     state: absent
 
+# 3. Pin minimal GNOME fallback session as User-installed BEFORE the
+#    autoremove sweep, so the sweep can't strip gnome-shell + companions
+#    as orphans after the bloat purge.
+- name: Install minimal GNOME fallback session
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ gnome_fallback_keep }}"
+    state: present
+
 - name: Clean orphan dependencies
   become: true
   ansible.builtin.dnf:
     autoremove: true
 
-# 3. Install lean GNOME replacements
+# 4. Install lean GNOME replacements
 - name: Install lean replacements (notepad + camera)
   become: true
   ansible.builtin.dnf:

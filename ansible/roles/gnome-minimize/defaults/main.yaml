@@ -161,6 +161,21 @@ gnome_remove:
     - evolution
     - "evolution-*"
 
+# Minimal GNOME fallback session: enough to log in and use the desktop
+# if Hyprland breaks. Pinned User-installed so the autoremove sweep below
+# can't classify them as orphans after the bloat purge.
+# Roughly the slice of Fedora Workstation needed for a usable Wayland session.
+gnome_fallback_keep:
+  - gnome-shell
+  - gnome-session
+  - gnome-session-wayland-session
+  - gnome-control-center
+  - gnome-backgrounds
+  - gnome-keyring
+  - gnome-terminal
+  - nautilus
+  - xdg-desktop-portal-gnome
+
 # Lean replacements installed after removal pass
 gnome_install:
   - nano                # CLI notepad (usually already in @core)
