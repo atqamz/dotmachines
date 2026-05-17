@@ -1,0 +1,4 @@
+---
+# Default firewalld zone for SSH. Fedora Workstation usually uses `FedoraWorkstation`
+# for the active connection; override per-host if needed.
+ssh_firewalld_zone: FedoraWorkstation

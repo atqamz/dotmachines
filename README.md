@@ -22,6 +22,7 @@ Currently manages:
 11. Post-install tweaks: disable `NetworkManager-wait-online`, remove Gnome Software autostart, enable systemd-resolved DNS-over-TLS (Cloudflare 1.1.1.2)
 12. Clone [atqamz/dotfiles](https://github.com/atqamz/dotfiles), run its `make stow`
 13. Restore SSH keys + secondary GPG identities at correct paths and modes
+14. Enable sshd + open SSH port in firewalld (inbound SSH allowed via authorized_keys)
 
 ## Not in MVP (future)
 
@@ -43,7 +44,7 @@ ansible/
   roles/            # hostname, dnf-tuning, rpm-fusion, base-packages,
                     # nvidia, multimedia, hyprland, firmware,
                     # tailscale, warp, system-tweaks, dotfiles,
-                    # secrets-bootstrap
+                    # secrets-bootstrap, ssh-server
   requirements.yml  # ansible-galaxy collections
 
 scripts/

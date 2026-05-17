@@ -1,0 +1,32 @@
+---
+- name: Install openssh-server + firewalld
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - openssh-server
+      - firewalld
+      - python3-firewall
+    state: present
+
+- name: Enable + start firewalld
+  become: true
+  ansible.builtin.systemd:
+    name: firewalld
+    enabled: true
+    state: started
+
+- name: Enable + start sshd
+  become: true
+  ansible.builtin.systemd:
+    name: sshd
+    enabled: true
+    state: started
+
+- name: Open SSH service in firewalld (permanent + runtime)
+  become: true
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: true
+    immediate: true
+    state: enabled
+    zone: "{{ ssh_firewalld_zone }}"

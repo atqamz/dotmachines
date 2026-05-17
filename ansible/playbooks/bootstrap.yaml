@@ -38,3 +38,5 @@
       tags: [dotfiles]
     - role: secrets-bootstrap
       tags: [secrets]
+    - role: ssh-server
+      tags: [ssh, network]
