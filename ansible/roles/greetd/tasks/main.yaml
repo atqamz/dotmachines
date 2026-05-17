@@ -11,16 +11,6 @@
     - Reset greetd failure state
     - Restart greetd
 
-- name: Remove gdm (replaced by greetd)
-  become: true
-  ansible.builtin.dnf:
-    name: gdm
-    state: absent
-  notify:
-    - Reload systemd
-    - Reset greetd failure state
-    - Restart greetd
-
 - name: Deploy greetd config
   become: true
   ansible.builtin.copy:
@@ -41,13 +31,26 @@
     state: link
     force: true
 
-- name: Disable gdm.service if it exists
+# gdm package stays installed: gnome-shell hard-requires gdm-libs, and the
+# GNOME session is kept as a fallback. We only neutralise the daemon by
+# masking gdm.service and pointing display-manager.service at greetd.
+- name: Mask gdm.service to prevent it grabbing display-manager
   become: true
   ansible.builtin.systemd:
     name: gdm.service
     enabled: false
-    masked: false
+    masked: true
   failed_when: false
+
+- name: Point display-manager.service alias at greetd
+  become: true
+  ansible.builtin.file:
+    src: /usr/lib/systemd/system/greetd.service
+    dest: /etc/systemd/system/display-manager.service
+    state: link
+    force: true
+  notify:
+    - Reload systemd
 
 - name: Enable greetd.service
   become: true
