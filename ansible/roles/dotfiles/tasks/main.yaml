@@ -5,12 +5,13 @@
     name: stow
     state: present
 
-- name: Clone dotfiles repo
+- name: Clone or update dotfiles repo
   ansible.builtin.git:
     repo: "{{ dotfiles_repo }}"
     dest: "{{ dotfiles_path }}"
     version: master
-    update: false  # don't pull on subsequent runs; user manages dotfiles separately
+    update: true
+    force: false
 
 - name: Run dotfiles `make stow`
   community.general.make:
