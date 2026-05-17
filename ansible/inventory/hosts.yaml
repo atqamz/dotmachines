@@ -1,9 +1,13 @@
 ---
 all:
+  vars:
+    ansible_user: atqa
+    # ssh via tailscale MagicDNS (inventory_hostname == tailscale name).
+    # Use local connection when targeting current host to skip ssh-into-self loop.
+    ansible_host: "{{ inventory_hostname }}"
+    ansible_connection: "{{ 'local' if inventory_hostname == lookup('pipe', 'hostname --short') else 'ssh' }}"
   children:
     workstations:
       hosts:
         sfx14:
-          ansible_connection: local
         pavg15:
-          ansible_connection: local

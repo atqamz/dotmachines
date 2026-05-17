@@ -9,7 +9,7 @@ Idempotent Fedora Workstation provisioning for personal laptops.
 - **Public repo, no secrets here.** All encrypted material lives in the private companion repo `atqamz/secrets`, cloned at `~/repo/secrets` (override via `-e secrets_path=...`).
 - **SOPS root of trust: GPG fingerprint `F1F60517602888C8D5E486EB8AD7D4A302EE6771`.** The `.sops.yaml` is kept in this repo as defense-in-depth in case future Ansible `host_vars` need encryption.
 - **GNOME stays as fallback session.** Hyprland is the daily driver but Fedora's GNOME must remain installable side-by-side.
-- **Hosts run `ansible_connection: local`** — no SSH-into-self loop.
+- **Hybrid connection.** `inventory_hostname` matches tailscale MagicDNS name. Target == current host → `local`. Other host → `ssh` over tailscale. No SSH-into-self loop, but cross-host playbook runs work from either machine.
 
 ## Layout
 
