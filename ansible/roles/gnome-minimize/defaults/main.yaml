@@ -23,10 +23,13 @@ gnome_remove:
     - cheese
     - simple-scan
     - mediawriter
-  # Office suite (wildcard handled separately via shell)
+  # Office suite + dependents
   office_patterns:
+    - libreoffice
     - "libreoffice-*"
-  # Crash reporting + parental + hw mce
+    - unoconv
+  # Crash reporting + hw mce
+  # Note: malcontent kept — gnome-control-center hard-requires it
   system_bloat:
     - abrt
     - abrt-cli
@@ -38,14 +41,16 @@ gnome_remove:
     - abrt-addon-vmcore
     - abrt-addon-xorg
     - abrt-dbus
-    - malcontent
+    - abrt-plugin-bodhi
+    - python3-abrt
+    - python3-abrt-addon
     - mcelog
     - gnome-software
-  # Flatpak + flathub remote (autoremove of gnome-software-fedora-flatpak-remotes etc handled by autoremove)
+  # Flatpak + flathub remote
+  # Note: flatpak-libs kept — pulled in transitively by malcontent-ui-libs (gnome-control-center dep)
   flatpak:
     - flatpak
     - fedora-flathub-remote
-    - flatpak-libs
     - flatpak-selinux
 
 # Lean replacements installed after removal pass
