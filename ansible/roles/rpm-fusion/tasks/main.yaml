@@ -1,7 +1,7 @@
 ---
 - name: Detect Fedora release number
   ansible.builtin.set_fact:
-    fedora_release: "{{ ansible_distribution_major_version }}"
+    fedora_release: "{{ ansible_facts['distribution_major_version'] }}"
 
 - name: Install RPM Fusion free + nonfree release packages
   become: true
@@ -11,11 +11,3 @@
       - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_release }}.noarch.rpm"
     state: present
     disable_gpg_check: true
-
-- name: Install RPM Fusion appstream metadata
-  become: true
-  ansible.builtin.dnf:
-    name:
-      - rpmfusion-free-appstream-data
-      - rpmfusion-nonfree-appstream-data
-    state: present
