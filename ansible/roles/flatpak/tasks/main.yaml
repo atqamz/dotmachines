@@ -1,0 +1,23 @@
+---
+- name: Install flatpak runtime
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - flatpak
+      - flatpak-selinux
+    state: present
+
+- name: Check flatpak binary presence
+  ansible.builtin.stat:
+    path: /usr/bin/flatpak
+  register: flatpak_bin_q
+
+- name: Configure flatpak remotes (system scope)
+  become: true
+  community.general.flatpak_remote:
+    name: "{{ item.name }}"
+    flatpakrepo_url: "{{ item.url }}"
+    method: system
+    state: present
+  loop: "{{ flatpak_remotes }}"
+  when: flatpak_bin_q.stat.exists

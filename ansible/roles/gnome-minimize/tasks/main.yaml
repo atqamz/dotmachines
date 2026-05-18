@@ -1,26 +1,5 @@
 ---
-# 1. Uninstall any flatpak apps BEFORE removing flatpak runtime
-- name: Check flatpak presence
-  ansible.builtin.stat:
-    path: /usr/bin/flatpak
-  register: gnome_minimize_flatpak_q
-
-- name: Uninstall all system-scope flatpak apps (if any)
-  become: true
-  ansible.builtin.command: flatpak uninstall --all --system -y --noninteractive
-  when: gnome_minimize_flatpak_q.stat.exists
-  register: gnome_minimize_fp_sys
-  changed_when: "'Uninstalling' in gnome_minimize_fp_sys.stdout"
-  failed_when: false
-
-- name: Uninstall all user-scope flatpak apps (if any)
-  ansible.builtin.command: flatpak uninstall --all --user -y --noninteractive
-  when: gnome_minimize_flatpak_q.stat.exists
-  register: gnome_minimize_fp_user
-  changed_when: "'Uninstalling' in gnome_minimize_fp_user.stdout"
-  failed_when: false
-
-# 2. Remove apps in groups
+# Remove apps in groups
 - name: Remove tour + docs
   become: true
   ansible.builtin.dnf:
@@ -55,12 +34,6 @@
   become: true
   ansible.builtin.dnf:
     name: "{{ gnome_remove.system_bloat }}"
-    state: absent
-
-- name: Remove flatpak runtime + remotes
-  become: true
-  ansible.builtin.dnf:
-    name: "{{ gnome_remove.flatpak }}"
     state: absent
 
 - name: Remove Audio Production apps (ardour/audacity/musescore/etc.)
