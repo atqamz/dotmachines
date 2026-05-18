@@ -51,3 +51,9 @@
     - swaync
     - wlogout
     - rofi
+
+- name: Ensure quickshell state directory exists (emoji recents, etc.)
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/quickshell/state"
+    state: directory
+    mode: '0755'
