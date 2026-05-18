@@ -1,0 +1,4 @@
+---
+tui_tools_packages:
+  - podman-tui
+  - gitui
