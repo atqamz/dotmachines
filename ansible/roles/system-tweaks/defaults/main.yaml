@@ -1,8 +1,4 @@
 ---
-# Set to true to configure systemd-resolved with Cloudflare DNS-over-TLS (1.1.1.2 family).
-# Per-host override in host_vars/<host>.yaml.
-enable_dns_over_tls: true
-
 # Set to false to keep org.gnome.Software autostart enabled.
 disable_gnome_software_autostart: true
 
