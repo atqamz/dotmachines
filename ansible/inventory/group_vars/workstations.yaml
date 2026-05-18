@@ -7,6 +7,10 @@ dotfiles_path: "{{ ansible_facts['env']['HOME'] }}/dotfiles"
 hyprland_copr: "lionheartp/Hyprland"
 quickshell_copr: "errornointernet/quickshell"
 
+# sops is not packaged in Fedora; pull the upstream static binary.
+sops_version: "3.13.1"
+sops_sha256: "620a9d7e3352ababeca6908cea24a6e8b14ce89a448ddbd3f94f1ef3398f470a"
+
 base_packages:
   groups:
     - "@core"
