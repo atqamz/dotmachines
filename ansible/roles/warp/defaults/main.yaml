@@ -1,0 +1,6 @@
+---
+# Pinned to last build that installs cleanly on Fedora 44.
+# Latest cloudflare-warp pulls webkit2gtk3 which F44 dropped.
+# Bump once Cloudflare publishes a build linked against webkit2gtk4.1.
+warp_version: "2026.3.846.0-1"
+warp_rpm_url: "https://pkg.cloudflareclient.com/rpm/x86_64/cloudflare-warp-2026.3.846.0.x86_64.rpm"

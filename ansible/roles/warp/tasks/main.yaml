@@ -5,56 +5,43 @@
     state: present
     key: https://pkg.cloudflareclient.com/pubkey.gpg
 
-- name: Add Cloudflare WARP dnf repo
+- name: Write cloudflare-warp dnf repo (with excludepkgs to hold pinned version)
   become: true
-  ansible.builtin.get_url:
-    url: https://pkg.cloudflareclient.com/cloudflare-warp-ascii.repo
+  ansible.builtin.copy:
     dest: /etc/yum.repos.d/cloudflare-warp.repo
     mode: '0644'
+    content: |
+      [cloudflare-warp-stable]
+      name=cloudflare-warp-stable
+      baseurl=https://pkg.cloudflareclient.com/rpm
+      enabled=1
+      type=rpm
+      gpgcheck=1
+      gpgkey=https://pkg.cloudflareclient.com/pubkey.gpg
+      excludepkgs=cloudflare-warp
 
-# cloudflare-warp depends on webkit2gtk3 which Fedora 44 dropped (replaced by webkit2gtk4.1/webkitgtk6.0).
-# Until Cloudflare rebuilds against new webkit, gate install on dep availability.
-- name: Check if webkit2gtk3 (cloudflare-warp dep) is available
-  ansible.builtin.command: dnf list --available webkit2gtk3
-  register: warp_webkit_dep
-  changed_when: false
-  failed_when: false
-  check_mode: false
-
-- name: Install cloudflare-warp
+- name: Install pinned cloudflare-warp from upstream RPM URL
   become: true
   ansible.builtin.dnf:
-    name: cloudflare-warp
+    name: "{{ warp_rpm_url }}"
     state: present
-  when: warp_webkit_dep.rc == 0
-
-- name: Notice — WARP install skipped (webkit2gtk3 unavailable on this Fedora release)
-  ansible.builtin.debug:
-    msg: |
-      cloudflare-warp install SKIPPED on this host.
-      Reason: webkit2gtk3 not available (Fedora dropped it in F44).
-      Fix: wait for Cloudflare to rebuild cloudflare-warp against webkit2gtk4.1, then re-run with --tags warp.
-  when: warp_webkit_dep.rc != 0
+    disable_excludes: cloudflare-warp-stable
+    allow_downgrade: true
 
 - name: Check WARP registration status
   ansible.builtin.command: warp-cli registration show
   register: warp_registration
   changed_when: false
   failed_when: false
-  when: warp_webkit_dep.rc == 0
 
 - name: Register WARP client (non-interactive, accepts TOS)
   ansible.builtin.command: warp-cli --accept-tos registration new
-  when:
-    - warp_webkit_dep.rc == 0
-    - warp_registration.rc != 0
+  when: warp_registration.rc != 0
   register: warp_register
   changed_when: warp_register.rc == 0
 
 - name: Notice — WARP installed but not auto-connected
   ansible.builtin.debug:
     msg: |
-      WARP installed and registered. Connect manually with:
+      WARP installed (pinned {{ warp_version }}) and registered. Connect manually with:
         warp-cli connect
-      To enable on every login, add a user systemd service or session hook later.
-  when: warp_webkit_dep.rc == 0
