@@ -38,6 +38,8 @@
       tags: [greetd, desktop]
     - role: gnome-minimize
       tags: [packages, gnome-minimize, debloat]
+    - role: flatpak
+      tags: [packages, flatpak]
     - role: firmware
       tags: [firmware]
     - role: tailscale
