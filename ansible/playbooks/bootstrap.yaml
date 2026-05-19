@@ -56,7 +56,7 @@
       tags: [tweaks]
     - role: dotfiles
       tags: [dotfiles]
-    - role: secrets-bootstrap
+    - role: secrets
       tags: [secrets]
     - role: ssh-server
       tags: [ssh, network]
