@@ -4,3 +4,6 @@ hardware:
   igpu: intel
   dgpu: "NVIDIA RTX 4050"
   model: "Acer Swift X14 72G"
+
+enable_password_store: true
+enable_raw: true

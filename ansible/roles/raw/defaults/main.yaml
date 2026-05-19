@@ -1,0 +1,4 @@
+---
+raw_repo: "git@github.com:atqamz/raw.git"
+raw_path: "{{ ansible_facts['env']['HOME'] }}/raw"
+raw_branch: main

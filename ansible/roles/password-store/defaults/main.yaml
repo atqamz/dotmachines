@@ -1,0 +1,4 @@
+---
+password_store_repo: "git@github.com:atqamz/password-store"
+password_store_path: "{{ ansible_facts['env']['HOME'] }}/.password-store"
+password_store_branch: master

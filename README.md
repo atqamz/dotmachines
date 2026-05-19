@@ -46,7 +46,7 @@ ansible/
   roles/            # hostname, dnf-tuning, rpm-fusion, base-packages,
                     # nvidia, multimedia, libvirt, hyprland,
                     # gnome-minimize, firmware, tailscale, warp,
-                    # system-tweaks, dotfiles, secrets-bootstrap,
+                    # system-tweaks, dotfiles, secrets,
                     # ssh-server
   requirements.yml  # ansible-galaxy collections
 

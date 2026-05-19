@@ -56,8 +56,14 @@
       tags: [tweaks]
     - role: dotfiles
       tags: [dotfiles]
-    - role: secrets-bootstrap
+    - role: secrets
       tags: [secrets]
+    - role: password-store
+      tags: [password-store, secrets]
+      when: enable_password_store | default(false)
+    - role: raw
+      tags: [raw, corpus]
+      when: enable_raw | default(false)
     - role: ssh-server
       tags: [ssh, network]
     - role: maintenance

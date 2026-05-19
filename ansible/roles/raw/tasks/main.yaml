@@ -1,0 +1,22 @@
+---
+- name: Clone or update raw corpus
+  ansible.builtin.git:
+    repo: "{{ raw_repo }}"
+    dest: "{{ raw_path }}"
+    version: "{{ raw_branch }}"
+    update: true
+    accept_hostkey: false
+  register: raw_clone
+  ignore_errors: true
+
+- name: Warn if raw clone/update failed
+  ansible.builtin.debug:
+    msg: >-
+      WARN: raw clone/update failed.
+      Likely SSH auth (key not loaded in agent).
+      Run `ssh-add ~/.ssh/id_ed25519` then re-run:
+        ansible-playbook ... --tags raw
+      Detail: {{ raw_clone.msg | default('(no message)') }}
+  when:
+    - raw_clone.failed is defined
+    - raw_clone.failed

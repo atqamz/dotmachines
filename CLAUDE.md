@@ -17,7 +17,7 @@ Idempotent Fedora Workstation provisioning for personal laptops.
 ansible/
   inventory/{hosts.yaml,group_vars/,host_vars/}
   playbooks/{bootstrap.yaml,secrets-restore.yaml}
-  roles/{hostname,dnf-tuning,rpm-fusion,base-packages,nvidia,hyprland,dotfiles,secrets-bootstrap}
+  roles/{hostname,dnf-tuning,rpm-fusion,base-packages,nvidia,hyprland,dotfiles,secrets}
 scripts/ansible-setup.sh
 ```
 
@@ -43,4 +43,4 @@ Secrets are added in the companion `secrets` repo, NOT here.
 2. Stage cleartext as `<dir>/<name>.dec.<ext>`
 3. Run `bash scripts/encrypt.sh` → produces `<dir>/<name>.sops.<ext>`
 4. Commit only the `.sops.*` file
-5. Reference in `dotmachines/ansible/roles/secrets-bootstrap/defaults/main.yaml` if the new file should be auto-placed on every machine
+5. Reference in `dotmachines/ansible/roles/secrets/defaults/main.yaml` if the new file should be auto-placed on every machine
