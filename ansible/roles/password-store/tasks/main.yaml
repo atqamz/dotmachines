@@ -13,7 +13,7 @@
     update: true
     accept_hostkey: false
   register: password_store_clone
-  failed_when: false
+  ignore_errors: true
 
 - name: Warn if password-store clone/update failed
   ansible.builtin.debug:

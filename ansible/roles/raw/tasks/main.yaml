@@ -7,7 +7,7 @@
     update: true
     accept_hostkey: false
   register: raw_clone
-  failed_when: false
+  ignore_errors: true
 
 - name: Warn if raw clone/update failed
   ansible.builtin.debug:
