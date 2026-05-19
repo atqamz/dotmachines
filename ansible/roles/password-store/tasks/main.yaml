@@ -1,0 +1,28 @@
+---
+- name: Install pass
+  become: true
+  ansible.builtin.dnf:
+    name: pass
+    state: present
+
+- name: Clone or update password-store
+  ansible.builtin.git:
+    repo: "{{ password_store_repo }}"
+    dest: "{{ password_store_path }}"
+    version: "{{ password_store_branch }}"
+    update: true
+    accept_hostkey: false
+  register: password_store_clone
+  failed_when: false
+
+- name: Warn if password-store clone/update failed
+  ansible.builtin.debug:
+    msg: >-
+      WARN: password-store clone/update failed.
+      Likely SSH auth (key not loaded in agent).
+      Run `ssh-add ~/.ssh/id_ed25519` then re-run:
+        ansible-playbook ... --tags password-store
+      Detail: {{ password_store_clone.msg | default('(no message)') }}
+  when:
+    - password_store_clone.failed is defined
+    - password_store_clone.failed
