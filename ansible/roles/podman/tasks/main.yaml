@@ -1,0 +1,12 @@
+---
+- name: Install podman and tooling
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - podman
+      - podman-compose
+      - skopeo
+      - buildah
+      - slirp4netns
+      - fuse-overlayfs
+    state: present

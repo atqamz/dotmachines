@@ -38,8 +38,12 @@
       tags: [greetd, desktop]
     - role: gnome-minimize
       tags: [packages, gnome-minimize, debloat]
-    - role: flatpak
-      tags: [packages, flatpak]
+    - role: podman
+      tags: [packages, podman]
+    - role: ssh-agent
+      tags: [ssh-agent, systemd]
+    - role: tui-tools
+      tags: [packages, tui-tools]
     - role: firmware
       tags: [firmware]
     - role: tailscale

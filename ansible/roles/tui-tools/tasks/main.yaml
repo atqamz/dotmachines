@@ -1,0 +1,6 @@
+---
+- name: Install TUI tools
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ tui_tools_packages }}"
+    state: present
