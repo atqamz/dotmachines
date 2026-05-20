@@ -36,6 +36,37 @@
   notify:
     - Reload systemd
 
+- name: Deploy reconcile wrapper script
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-reconcile.sh
+    dest: /usr/local/sbin/dotmachines-reconcile.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy reconcile systemd service
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-reconcile.service
+    dest: /etc/systemd/system/dotmachines-reconcile.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+
+- name: Deploy reconcile systemd timer
+  become: true
+  ansible.builtin.copy:
+    src: dotmachines-reconcile.timer
+    dest: /etc/systemd/system/dotmachines-reconcile.timer
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+
 - name: Flush handlers so daemon-reload runs before enable
   ansible.builtin.meta: flush_handlers
 
@@ -49,5 +80,18 @@
   become: true
   ansible.builtin.systemd:
     name: dotmachines-maintenance.timer
+    enabled: true
+    state: started
+
+- name: Enable reconcile service
+  become: true
+  ansible.builtin.systemd:
+    name: dotmachines-reconcile.service
+    enabled: true
+
+- name: Enable + start reconcile timer
+  become: true
+  ansible.builtin.systemd:
+    name: dotmachines-reconcile.timer
     enabled: true
     state: started
