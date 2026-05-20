@@ -3,3 +3,6 @@ hardware:
   has_nvidia: true
   igpu: amd
   model: "HP Pavilion Gaming 15 (Ryzen 5 4600H, GTX 1650)"
+
+enable_password_store: true
+enable_raw: true
