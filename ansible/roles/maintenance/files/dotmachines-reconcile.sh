@@ -4,7 +4,7 @@ set -uo pipefail
 REPO=/home/atqa/repo/dotmachines
 HOST=$(hostname --short)
 USER=atqa
-UID_NUM=1000
+UID_NUM=$(id -u "$USER")
 
 log() { logger -t dotmachines-reconcile -- "$*"; printf '%s\n' "$*"; }
 
@@ -37,7 +37,7 @@ fi
 
 log "changes detected: $LOCAL -> $REMOTE"
 
-if ! sudo -u "$USER" -H git -C "$REPO" merge --ff-only --quiet '@{u}'; then
+if ! sudo -u "$USER" -H git -C "$REPO" merge --ff-only --quiet origin/master; then
   log "git ff-only failed (dirty tree or non-FF), skipping reconcile"
   notify_failure "git merge --ff-only failed. Manual intervention needed."
   exit 1
