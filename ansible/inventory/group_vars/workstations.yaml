@@ -48,6 +48,7 @@ base_packages:
     - pciutils
     - usbutils
     - lm_sensors
+    - earlyoom
   input_media:
     - brightnessctl
     - playerctl
@@ -73,6 +74,7 @@ base_packages:
     - wtype
     - alacritty
     - openssh-askpass
+    - opentofu
 
 hyprland_packages:
   - hyprland
