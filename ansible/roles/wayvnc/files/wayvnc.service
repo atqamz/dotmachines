@@ -5,11 +5,13 @@ BindsTo=graphical-session.target
 
 [Service]
 Type=simple
+ExecStartPre=/bin/bash -c 'test -n "$(/usr/bin/tailscale ip -4)"'
+ExecStartPre=-/usr/bin/hyprctl output remove VNC-1
 ExecStartPre=/usr/bin/hyprctl output create headless VNC-1
-ExecStartPre=/bin/sleep 0.2
+ExecStartPre=/bin/sleep 0.5
 ExecStartPre=/usr/bin/hyprctl keyword monitor "VNC-1,1920x1080@60,auto,1"
 ExecStart=/bin/bash -c 'exec /usr/bin/wayvnc -o VNC-1 "$(/usr/bin/tailscale ip -4)" 5900'
-ExecStopPost=/usr/bin/hyprctl output remove VNC-1
+ExecStopPost=-/usr/bin/hyprctl output remove VNC-1
 Restart=on-failure
 RestartSec=3
 
