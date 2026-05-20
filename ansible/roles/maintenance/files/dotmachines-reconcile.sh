@@ -21,8 +21,14 @@ if ! sudo -u "$USER" -H git -C "$REPO" fetch --quiet origin; then
   exit 0
 fi
 
-LOCAL=$(sudo -u "$USER" -H git -C "$REPO" rev-parse HEAD)
-REMOTE=$(sudo -u "$USER" -H git -C "$REPO" rev-parse origin/master)
+LOCAL=$(sudo -u "$USER" -H git -C "$REPO" rev-parse HEAD) || {
+  log "rev-parse HEAD failed, skipping reconcile"
+  exit 0
+}
+REMOTE=$(sudo -u "$USER" -H git -C "$REPO" rev-parse origin/master) || {
+  log "rev-parse origin/master failed, skipping reconcile"
+  exit 0
+}
 
 if [ "$LOCAL" = "$REMOTE" ]; then
   log "no changes, nothing to do"
