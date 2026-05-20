@@ -50,6 +50,8 @@
       tags: [tailscale, network]
     - role: warp
       tags: [warp, network]
+    - role: wayvnc
+      tags: [wayvnc, desktop]
     - role: unityhub
       tags: [packages, unityhub, desktop]
     - role: system-tweaks

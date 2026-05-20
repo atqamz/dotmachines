@@ -1,0 +1,29 @@
+---
+- name: Install wayvnc
+  become: true
+  ansible.builtin.dnf:
+    name: wayvnc
+    state: present
+
+- name: Ensure user systemd directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user"
+    state: directory
+    mode: "0755"
+
+- name: Deploy wayvnc systemd user service
+  ansible.builtin.copy:
+    src: wayvnc.service
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/systemd/user/wayvnc.service"
+    mode: "0644"
+  notify:
+    - Reload user systemd
+
+- name: Flush handlers so daemon-reload runs before enable
+  ansible.builtin.meta: flush_handlers
+
+- name: Enable wayvnc user service
+  ansible.builtin.systemd_service:
+    name: wayvnc.service
+    scope: user
+    enabled: true
