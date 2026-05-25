@@ -82,3 +82,9 @@
   loop: "{{ homebrew_formulae }}"
   register: brew_install
   changed_when: "'already installed' not in brew_install.stderr"
+
+- name: Upgrade all outdated formulae
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew upgrade
+  register: brew_upgrade
+  changed_when: brew_upgrade.stdout | length > 0
