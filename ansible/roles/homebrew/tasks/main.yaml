@@ -1,0 +1,90 @@
+---
+- name: Install Homebrew build dependencies
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ homebrew_build_deps }}"
+    state: present
+
+- name: Create Homebrew directory tree
+  become: true
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
+    mode: '0755'
+  loop:
+    - /home/linuxbrew/.linuxbrew
+    - /home/linuxbrew/.linuxbrew/bin
+    - /home/linuxbrew/.linuxbrew/etc
+    - /home/linuxbrew/.linuxbrew/include
+    - /home/linuxbrew/.linuxbrew/lib
+    - /home/linuxbrew/.linuxbrew/sbin
+    - /home/linuxbrew/.linuxbrew/share
+    - /home/linuxbrew/.linuxbrew/share/doc
+    - /home/linuxbrew/.linuxbrew/share/man
+    - /home/linuxbrew/.linuxbrew/share/man/man1
+    - /home/linuxbrew/.linuxbrew/share/zsh
+    - /home/linuxbrew/.linuxbrew/share/zsh/site-functions
+    - /home/linuxbrew/.linuxbrew/var
+    - /home/linuxbrew/.linuxbrew/var/homebrew
+    - /home/linuxbrew/.linuxbrew/var/homebrew/linked
+    - /home/linuxbrew/.linuxbrew/opt
+    - /home/linuxbrew/.linuxbrew/Cellar
+    - /home/linuxbrew/.linuxbrew/Caskroom
+    - /home/linuxbrew/.linuxbrew/Frameworks
+    - /home/linuxbrew/.linuxbrew/Homebrew
+
+- name: Clone Homebrew
+  ansible.builtin.git:
+    repo: https://github.com/Homebrew/brew.git
+    dest: /home/linuxbrew/.linuxbrew/Homebrew
+    version: master
+    update: false
+
+- name: Symlink brew binary
+  ansible.builtin.file:
+    src: /home/linuxbrew/.linuxbrew/Homebrew/bin/brew
+    dest: /home/linuxbrew/.linuxbrew/bin/brew
+    state: link
+
+- name: Run brew update
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew update --force --quiet
+  register: brew_update
+  changed_when: brew_update.stdout | length > 0
+
+- name: Ensure fish conf.d directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fish/conf.d"
+    state: directory
+    mode: '0755'
+
+- name: Add Homebrew shellenv to fish
+  ansible.builtin.copy:
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/conf.d/homebrew.fish"
+    mode: '0644'
+    content: |
+      if test -x /home/linuxbrew/.linuxbrew/bin/brew
+          eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+      end
+
+- name: Add Homebrew taps
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew tap {{ item }}
+  loop: "{{ homebrew_taps }}"
+  register: brew_tap
+  changed_when: "'already tapped' not in brew_tap.stderr"
+
+- name: Install Homebrew formulae
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew install {{ item }}
+  loop: "{{ homebrew_formulae }}"
+  register: brew_install
+  changed_when: "'already installed' not in brew_install.stderr"
+
+- name: Upgrade all outdated formulae
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew upgrade
+  register: brew_upgrade
+  changed_when: brew_upgrade.stdout | length > 0

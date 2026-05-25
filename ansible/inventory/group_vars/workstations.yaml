@@ -77,6 +77,19 @@ base_packages:
     - opentofu
     - tigervnc
 
+homebrew_build_deps:
+  - "@development-tools"
+  - procps-ng
+  - curl
+  - file
+  - git
+
+homebrew_taps:
+  - anomalyco/tap
+
+homebrew_formulae:
+  - opencode
+
 hyprland_packages:
   - hyprland
   - hyprland-guiutils
