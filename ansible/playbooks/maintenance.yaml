@@ -53,9 +53,55 @@
       changed_when: "'Successfully installed firmware' in firmware_apply.stdout"
       failed_when: false
 
+    - name: Update Homebrew and upgrade all formulae
+      become: true
+      become_user: atqa
+      ansible.builtin.shell:
+        cmd: /home/linuxbrew/.linuxbrew/bin/brew update && /home/linuxbrew/.linuxbrew/bin/brew upgrade
+      register: brew_maintenance
+      changed_when: brew_maintenance.stdout is search('Upgrading')
+      failed_when: false
+
     - name: Update tailscale
       become: true
       ansible.builtin.command: tailscale update --yes
       register: tailscale_update
       changed_when: "'Updating Tailscale' in tailscale_update.stdout or 'updated' in tailscale_update.stdout"
+      failed_when: false
+
+    - name: Update Claude Code skills
+      become: true
+      become_user: atqa
+      ansible.builtin.shell:
+        cmd: source ~/.nvm/nvm.sh && npx skills update -y
+      args:
+        executable: /bin/bash
+      register: skills_update
+      changed_when: skills_update.stdout is search('updated|installed')
+      failed_when: false
+
+    - name: Update Playwright CLI and browser
+      become: true
+      become_user: atqa
+      ansible.builtin.shell:
+        cmd: source ~/.nvm/nvm.sh && npm update -g @anthropic-ai/claude-code-playwright && npx playwright-cli install-browser
+      args:
+        executable: /bin/bash
+      register: playwright_update
+      changed_when: playwright_update.stdout is search('added|updated|changed')
+      failed_when: false
+
+    - name: Update Claude Code plugins
+      become: true
+      become_user: atqa
+      ansible.builtin.shell:
+        cmd: claude plugin update {{ item }} 2>&1 || true
+      args:
+        executable: /bin/bash
+      loop:
+        - caveman@caveman
+        - superpowers@claude-plugins-official
+        - gopls-lsp@claude-plugins-official
+      register: plugin_update
+      changed_when: plugin_update.stdout is search('updated|installed')
       failed_when: false

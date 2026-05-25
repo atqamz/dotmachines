@@ -59,12 +59,8 @@
     name: "{{ base_packages.cli }}"
     state: present
 
-- name: Install sops binary from upstream release
+- name: Remove legacy sops binary (now managed by Homebrew)
   become: true
-  ansible.builtin.get_url:
-    url: "https://github.com/getsops/sops/releases/download/v{{ sops_version }}/sops-v{{ sops_version }}.linux.amd64"
-    dest: /usr/local/bin/sops
-    checksum: "sha256:{{ sops_sha256 }}"
-    mode: '0755'
-    owner: root
-    group: root
+  ansible.builtin.file:
+    path: /usr/local/bin/sops
+    state: absent

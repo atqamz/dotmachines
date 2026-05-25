@@ -54,20 +54,14 @@
   register: brew_update
   changed_when: brew_update.stdout | length > 0
 
-- name: Ensure fish conf.d directory exists
-  ansible.builtin.file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.config/fish/conf.d"
-    state: directory
-    mode: '0755'
-
-- name: Add Homebrew shellenv to fish
-  ansible.builtin.copy:
-    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/conf.d/homebrew.fish"
-    mode: '0644'
-    content: |
-      if test -x /home/linuxbrew/.linuxbrew/bin/brew
-          eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-      end
+- name: Add Homebrew shellenv to bash profile
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_facts['env']['HOME'] }}/.bashrc"
+    marker: "# {mark} MANAGED BY DOTMACHINES — homebrew"
+    block: |
+      if [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      fi
 
 - name: Add Homebrew taps
   ansible.builtin.command:
