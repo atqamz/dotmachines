@@ -54,6 +54,8 @@
       tags: [wayvnc, desktop]
     - role: unityhub
       tags: [packages, unityhub, desktop]
+    - role: homebrew
+      tags: [packages, homebrew]
     - role: system-tweaks
       tags: [tweaks]
     - role: dotfiles
