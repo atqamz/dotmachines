@@ -75,6 +75,8 @@ base_packages:
     - jq
     - mpv
     - v4l-utils
+    - tesseract
+    - tesseract-langpack-eng
 
 homebrew_build_deps:
   - "@development-tools"
