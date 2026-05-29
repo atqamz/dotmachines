@@ -1,7 +1,7 @@
 ---
 fedora_version_min: 43
 
-dotfiles_repo: "https://github.com/atqamz/dotfiles.git"
+dotfiles_repo: "git@github.com:atqamz/dotfiles.git"
 dotfiles_path: "{{ ansible_facts['env']['HOME'] }}/dotfiles"
 
 hyprland_copr: "lionheartp/Hyprland"
@@ -72,6 +72,9 @@ base_packages:
     - openssh-askpass
     - opentofu
     - tigervnc
+    - jq
+    - mpv
+    - v4l-utils
 
 homebrew_build_deps:
   - "@development-tools"
@@ -104,4 +107,6 @@ hyprland_packages:
   - ddcutil
   - fish
   - swappy
+  - hyprpicker
+  - gpu-screen-recorder
   - pinentry-gnome3
