@@ -98,7 +98,9 @@ hyprland_packages:
   - hyprland-guiutils
   - hyprlock
   - hypridle
+  - hyprsunset
   - hyprpolkitagent
+  - power-profiles-daemon
   - quickshell
   - qt6-qtdeclarative
   - qt6-qt5compat
