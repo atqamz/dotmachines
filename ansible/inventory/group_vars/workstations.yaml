@@ -54,6 +54,7 @@ base_packages:
     - ntfs-3g
   fonts:
     - fontawesome-fonts-all
+    - google-rubik-fonts
     - jetbrains-mono-fonts
   cli:
     - git
